@@ -20,7 +20,6 @@ while True:
         driver.execute_script("arguments[0].click();", load_more_button)
         time.sleep(0.2)
     except Exception as e:
-        print("All data loaded or an error occurred:", e)
         break
 
 stock_data = []
