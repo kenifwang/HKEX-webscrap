@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import csv
 import time
+import pandas as pd
 
 driver = webdriver.Firefox()
 driver.get('https://www.hkex.com.hk/Market-Data/Securities-Prices/Equities?sc_lang=en')
@@ -39,5 +40,9 @@ with open('hk_stocks.csv', 'w', newline='', encoding='UTF8') as f:
     writer.writerow(['Stock Code', 'Name'])
     writer.writerows(stock_data)
 
-print("Program finished")
 driver.quit()
+
+data = pd.read_csv('hk_stocks.csv')
+data['Stock Code'] = pd.to_numeric(data['Stock Code'], errors='coerce', downcast='integer')
+data_sorted = data.sort_values(by='Stock Code', ascending=True).reset_index(drop=True)
+data_sorted.to_csv('hk_stocks_sorted.csv', index=False)
